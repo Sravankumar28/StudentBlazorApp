@@ -1,0 +1,9 @@
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\bin\Debug\netstandard2.0\StudentModels.deps.json
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\bin\Debug\netstandard2.0\StudentModels.dll
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\bin\Debug\netstandard2.0\StudentModels.pdb
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.csprojAssemblyReference.cache
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.AssemblyInfoInputs.cache
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.AssemblyInfo.cs
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.csproj.CoreCompileInputs.cache
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.dll
+C:\Users\azxye\source\repos\sravan\StudentApplication\StudentModels\obj\Debug\netstandard2.0\StudentModels.pdb

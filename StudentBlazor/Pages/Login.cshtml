@@ -1,0 +1,41 @@
+﻿@page "/login"
+@using StudentModels
+@using System.Net.Http
+@using Newtonsoft.Json
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
+
+
+
+<div class="container">
+    <h1>Log in to JWT Authentication!</h1>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" name="email" placeholder="Email" class="form-control" bind="@Email" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control" bind="@Password" />
+    </div>
+
+    <button onclick="@SubmitForm()">Submit</button>
+</div>
+
+@functions {
+    public string Email { get; set; } = "";
+    public string Password { get; set; } = "";
+    public string Token { get; set; } = "";
+
+    private async Task SubmitForm()
+    {
+        var vm = JsonConvert.SerializeObject(new UserView
+        {
+            Email = Email,
+            Password = Password
+        });
+        var Http = new HttpClient();
+        var response = await Http.PostAsync("http://localhost:8013/api/Login", new StringContent(vm, System.Text.Encoding.UTF8, "application/json"));
+
+        await LocalStore.SetItemAsync<string>("token", $"{response}");
+        // Console.WriteLine(response);
+    }
+}

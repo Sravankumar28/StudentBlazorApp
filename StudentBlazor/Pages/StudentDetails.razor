@@ -1,0 +1,81 @@
+﻿@page "/studentdetails/{StudentId:int}"
+
+@using StudentBlazor.Data
+@using StudentModels
+@inject StudentService studentService
+@inject IModalService modal
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
+
+
+<h3>StudentDetails</h3>
+@if (!IsLoggedIn)
+{
+    <h1>Please Login to access this info........</h1>
+    <div><a href="/">Login</a></div>
+}
+
+else if (studentDetail == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div align="center">
+
+
+        <div>Id: @studentDetail.Id</div>
+        <div>Student Name: @studentDetail.FirstName @studentDetail.LastName</div>
+        <div>Class Name: @studentDetail.Class</div>
+        <div>Admission Number: @studentDetail.AdmissionNumber</div>
+    </div>
+    <br />
+
+    <p align="center">Subjects</p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Subject Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subject in studentDetail.Subjects)
+            {
+                <tr>
+                    <td><button class="btn btn-link" @onclick="@(()=> ShowSubjectDetail(studentDetail.Id,subject.SubjectId))">@subject.SubjectId</button></td>
+                    <td>@subject.SubjectName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+@code {
+    [Parameter] public int StudentId { get; set; }
+
+    [CascadingParameter] public IModalService Modal { get; set; }
+
+    private StudentDetail studentDetail;
+    public bool IsLoggedIn = false;
+
+    void ShowSubjectDetail(int studentId, int subjectId)
+    {
+        var parameters = new ModalParameters();
+        parameters.Add("StudentId", studentId);
+        parameters.Add("SubjectId", subjectId);
+
+        Modal.Show<FetchData>("", parameters);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        studentDetail = await studentService.GetStudentDetailAsync(StudentId, await LocalStore.GetItemAsync<string>("token"));
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        IsLoggedIn = await LocalStore.ContainKeyAsync("token");
+        StateHasChanged();
+    }
+}

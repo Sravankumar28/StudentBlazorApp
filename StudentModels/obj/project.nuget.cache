@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "DP0buy9onewjZ6gdZLYoX+oszTR3A1SwWA5HL7dbQfA5s/Y1eGQRVMiyFv/WxveyvPkwi7mploXoktYF8iMeCA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\azxye\\source\\repos\\sravan\\StudentApplication\\StudentModels\\StudentModels.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\azxye\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\azxye\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

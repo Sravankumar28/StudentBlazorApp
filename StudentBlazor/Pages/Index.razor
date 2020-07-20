@@ -1,0 +1,74 @@
+﻿@page "/"
+@using StudentModels
+@using System.Net.Http
+@using Newtonsoft.Json
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
+
+@if (IsLoggedIn)
+{
+
+    <input class="btn btn-danger" type="button" @onclick="Logout" value="Logout" />
+
+}
+else
+{
+    <div class="container">
+        <h1>Log in to JWT Authentication!</h1>
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="text" name="Email" placeholder="Email" class="form-control" @bind="@Email" />
+        </div>
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="Password" name="Password" placeholder="Password" class="form-control" @bind="@Password" />
+        </div>
+        <input type="submit" @onclick="SubmitForm" value="submit">
+    </div>
+}
+
+
+@code {
+    public string Email { get; set; }
+    public string Password { get; set; }
+    public bool IsLoggedIn = false;
+    [Inject]
+    protected NavigationManager NavigationManager { get; set; }
+
+    private async Task SubmitForm()
+    {
+        if (string.IsNullOrEmpty(Email))
+            return;
+        var vm = JsonConvert.SerializeObject(
+        new UserView
+        {
+            Email = Email,
+            Password = Password
+        });
+
+        var Http = new HttpClient();
+        var response = await Http.PostAsync("http://localhost:8013/api/Login", new StringContent(vm, System.Text.Encoding.UTF8, "application/json"));
+
+        bool b = await LocalStore.ContainKeyAsync("token");
+
+        await LocalStore.SetItemAsync<string>
+    ("token", $"{JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync())}");
+        NavigationManager.NavigateTo("students");
+
+    }
+    private async Task Logout()
+    {
+        await LocalStore.ClearAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+    bool IsTokenExists()
+    {
+        return LocalStore.ContainKeyAsync("token").Result;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        IsLoggedIn = await LocalStore.ContainKeyAsync("token");
+        StateHasChanged();
+    }
+}

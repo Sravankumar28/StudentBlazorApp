@@ -1,0 +1,61 @@
+﻿@page "/students"
+
+@using StudentBlazor.Data
+@using StudentModels
+@inject StudentService studentService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
+
+
+
+@if (!IsLoggedIn)
+{
+    <h1>Please Login to access this info........</h1>
+    <div><a href="/">Login</a></div>
+}
+
+else if (studentDetails == null)
+{
+
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h1>Students</h1>
+
+    <p>This component demonstrates fetching Student data from a service.</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var studentDetail in studentDetails)
+            {
+                <tr>
+                    <td><a href="/studentdetails/@studentDetail.Id">@studentDetail.Id</a></td>
+                    <td>@studentDetail.FirstName</td>
+                    <td>@studentDetail.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    public bool IsLoggedIn = false;
+    private StudentModels.Student[] studentDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        studentDetails = await studentService.GetAllStudentAsync(await LocalStore.GetItemAsync<string>("token"));
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        IsLoggedIn = await LocalStore.ContainKeyAsync("token");
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,35 @@
+﻿@page "/subject/{StudentId:int}/{SubjectId:int}"
+
+@using StudentBlazor.Data
+@inject StudentService studentService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStore
+
+<h1>Subject Details</h1>
+
+@if (subject == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div align="center">
+
+        <div>Id: @subject.SubjectId</div>
+        <div>Subject Name: @subject.SubjectName</div>
+        <div>Total Marks: @subject.MarksTotal</div>
+        <div>Marks Obtained: @subject.MarksObtained</div>
+    </div>
+}
+
+@code {
+    private StudentModels.SubjectDetails subject;
+    [Parameter] public int StudentId { get; set; }
+    [Parameter] public int SubjectId { get; set; }
+
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        subject = await studentService.GetStudentMarksAsync(StudentId, SubjectId, await LocalStore.GetItemAsync<string>("token"));
+    }
+
+}
